@@ -14,11 +14,20 @@ st.set_page_config(
 st.title("📊 Dashboard de Vendas Farmacêuticas")
 
 # =========================
+# CLIENTE BIGQUERY (com secrets)
+# =========================
+@st.cache_resource
+def get_client():
+    return bigquery.Client.from_service_account_info(
+        st.secrets["gcp_service_account"]
+    )
+
+# =========================
 # CONEXÃO BIGQUERY
 # =========================
 @st.cache_data(ttl=600)
 def load_data():
-    client = bigquery.Client()
+    client = get_client()
 
     query = """
     SELECT 
@@ -40,7 +49,6 @@ def load_data():
     """
 
     df = client.query(query).to_dataframe()
-
     df['data'] = pd.to_datetime(df['data'])
 
     return df
