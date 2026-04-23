@@ -48,10 +48,11 @@ volume = df_filtro['volume'].values
 
 col1, col2, col3 = st.columns(3)
 
-col1.metric("💰 Receita Total", f"{np.sum(receita):,.2f}")
-col2.metric("📦 Volume Total", f"{np.sum(volume):,.0f}")
-col3.metric("💲 Preço Médio", f"{np.mean(precos):,.2f}")
+df_filtro['receita'] = pd.to_numeric(df_filtro['receita'], errors='coerce')
+df_filtro['preco_unitario'] = pd.to_numeric(df_filtro['preco_unitario'], errors='coerce')
+df_filtro['volume'] = pd.to_numeric(df_filtro['volume'], errors='coerce')
 
+df_filtro = df_filtro.fillna(0)
 # =========================
 # GRÁFICOS
 # =========================
