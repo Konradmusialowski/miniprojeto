@@ -89,6 +89,9 @@ st.bar_chart(df_regiao)
 st.subheader("🏆 Comparação de Receita")
 st.bar_chart(df_comp.set_index('empresa'))
 
+variacao = ((kpi_preco_max - kpi_preco_min) / kpi_preco_min) * 100
+st.metric("📊 Variação de Preço (%)", f"{variacao:.2f}%")
+
 st.subheader("📈 Evolução de Preço")
 
 st.line_chart(
