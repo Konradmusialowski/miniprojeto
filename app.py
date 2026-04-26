@@ -160,22 +160,14 @@ ax.set_title("Receita por Região")
 
 st.pyplot(fig)
 
-st.subheader("📊 SCD Tipo 2 - Antes x Depois")
+st.subheader("📊 Histórico SCD Tipo 2")
 
-#####scd2#######################################
+gold = pd.read_csv("data/gold/gold_produto.csv")
 
-before = pd.read_csv("data/gold/gold_before.csv")
-after = pd.read_csv("data/gold/gold_after.csv")
+gold['data_inicio_validade'] = pd.to_datetime(gold['data_inicio_validade'])
+gold['data_fim_validade'] = pd.to_datetime(gold['data_fim_validade'])
 
-col1, col2 = st.columns(2)
-
-with col1:
-    st.write("ANTES")
-    st.dataframe(before)
-
-with col2:
-    st.write("DEPOIS")
-    st.dataframe(after)
+st.dataframe(gold)
 
 # =========================
 # TABELA
