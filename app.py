@@ -44,6 +44,17 @@ df_filtro = df[
 # =========================
 # KPIs (NumPy)
 # =========================
+Q1 = df_filtro['preco_unitario'].quantile(0.25)
+Q3 = df_filtro['preco_unitario'].quantile(0.75)
+IQR = Q3 - Q1
+
+limite_inferior = Q1 - 1.5 * IQR
+limite_superior = Q3 + 1.5 * IQR
+
+df_sem_outlier = df_filtro[
+    (df_filtro['preco_unitario'] >= limite_inferior) &
+    (df_filtro['preco_unitario'] <= limite_superior)
+]
 precos = df_filtro['preco_unitario'].values
 receita = df_filtro['receita'].values
 volume = df_filtro['volume'].values
