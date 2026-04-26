@@ -58,6 +58,37 @@ df_filtro = df_filtro.fillna(0)
 # =========================
 # GRÁFICOS
 # =========================
+
+receita = df_filtro['receita'].values
+volume = df_filtro['volume'].values
+precos = df_filtro['preco_unitario'].values
+
+kpi_receita = np.sum(receita)
+kpi_volume = np.sum(volume)
+kpi_preco_medio = np.mean(precos)
+kpi_preco_min = np.min(precos)
+kpi_preco_max = np.max(precos)
+
+col1, col2, col3 = st.columns(3)
+
+col1.metric("💰 Receita Total", f"{kpi_receita:,.2f}")
+col2.metric("📦 Volume Total", f"{kpi_volume:,.0f}")
+col3.metric("💲 Preço Médio", f"{kpi_preco_medio:,.2f}")
+
+ticket_medio = kpi_receita / kpi_volume
+st.metric("🧾 Ticket Médio", f"{ticket_medio:,.2f}")
+
+df_comp = df_filtro.groupby('empresa')['receita'].sum().reset_index()
+
+df_empresa = df_filtro.groupby('empresa')['receita'].sum()
+st.bar_chart(df_empresa)
+#Por região ###
+df_regiao = df_filtro.groupby('regiao')['receita'].sum()
+st.bar_chart(df_regiao)
+
+st.subheader("🏆 Comparação de Receita")
+st.bar_chart(df_comp.set_index('empresa'))
+
 st.subheader("📈 Evolução de Preço")
 
 st.line_chart(
