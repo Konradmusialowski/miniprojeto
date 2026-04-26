@@ -4,3 +4,5 @@ numpy
 google-cloud-bigquery
 google-auth
 pyarrow
+seaborn
+matplotlib
