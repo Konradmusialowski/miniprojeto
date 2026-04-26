@@ -12,6 +12,21 @@ GOLD_PATH = "data/gold/"
 os.makedirs(SILVER_PATH, exist_ok=True)
 os.makedirs(GOLD_PATH, exist_ok=True)
 
+print("\n===== ANTES =====")
+print(gold[gold['flag_ativo'] == True])
+
+print("\n===== DEPOIS =====")
+print(gold[gold['id_produto_original'] == prod])
+
+print(f"\n🔍 Produto: {prod}")
+
+print("ANTES:")
+print(ativo)
+
+# depois do update
+print("DEPOIS:")
+print(gold[gold['id_produto_original'] == prod])
+
 # =========================
 # EXTRAÇÃO (BRONZE)
 # =========================
