@@ -160,6 +160,23 @@ ax.set_title("Receita por Região")
 
 st.pyplot(fig)
 
+st.subheader("📊 SCD Tipo 2 - Antes x Depois")
+
+#####scd2#######################################
+
+before = pd.read_csv("data/gold/gold_before.csv")
+after = pd.read_csv("data/gold/gold_after.csv")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.write("ANTES")
+    st.dataframe(before)
+
+with col2:
+    st.write("DEPOIS")
+    st.dataframe(after)
+
 # =========================
 # TABELA
 # =========================
