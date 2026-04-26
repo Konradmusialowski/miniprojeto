@@ -39,6 +39,8 @@ fato['preco_unitario'] = np.nan_to_num(
     nan=np.mean(fato['preco_unitario'])
 )
 
+fato=fato.drop.duplicates()
+
 # Join
 df = fato.merge(produto, on="produto_id", how="left") \
          .merge(filial, on="filial_id", how="left")
