@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
@@ -81,6 +83,82 @@ st.subheader("📉 Estatísticas")
 
 st.write("Desvio padrão:", np.std(precos))
 st.write("Mediana:", np.median(precos))
+
+#++++++++++++++++++++++++++++
+# seaborn      ##############
+sns.set_theme(style="whitegrid")
+st.subheader("📈 Evolução de Preço (Seaborn)")
+
+fig, ax = plt.subplots()
+
+sns.lineplot(
+    data=df_filtro,
+    x="data",
+    y="preco_unitario",
+    estimator="mean",
+    ax=ax
+)
+
+ax.set_title("Preço médio ao longo do tempo")
+ax.set_xlabel("Data")
+ax.set_ylabel("Preço")
+
+st.pyplot(fig)
+
+st.subheader("📊 Receita por Produto")
+
+df_prod = df_filtro.groupby("produto_id")["receita"].sum().reset_index()
+
+fig, ax = plt.subplots()
+
+sns.barplot(
+    data=df_prod,
+    x="produto_id",
+    y="receita",
+    ax=ax
+)
+
+ax.set_title("Receita por Produto")
+ax.set_xlabel("Produto")
+ax.set_ylabel("Receita")
+
+plt.xticks(rotation=45)
+
+st.pyplot(fig)
+
+st.subheader("🌎 Receita por Região")
+
+df_reg = df_filtro.groupby("regiao")["receita"].sum().reset_index()
+
+fig, ax = plt.subplots()
+
+sns.barplot(
+    data=df_reg,
+    x="regiao",
+    y="receita",
+    ax=ax
+)
+
+ax.set_title("Receita por Região")
+
+st.pyplot(fig)
+
+st.subheader("🌎 Receita por Região")
+
+df_reg = df_filtro.groupby("regiao")["receita"].sum().reset_index()
+
+fig, ax = plt.subplots()
+
+sns.barplot(
+    data=df_reg,
+    x="regiao",
+    y="receita",
+    ax=ax
+)
+
+ax.set_title("Receita por Região")
+
+st.pyplot(fig)
 
 # =========================
 # TABELA
