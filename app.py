@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
-st.title("📊 Dashboard Farmacêutico")
+st.title("☼ Dashboard Farmacêutico •")
 
 # =========================
 # CARREGAR DADOS
@@ -91,7 +91,7 @@ df_filtro['z_score'] = (df_filtro['preco_unitario'] - media) / desvio
 # pegar maior discrepante
 mais_discrepante = df_filtro.loc[df_filtro['z_score'].abs().idxmax()]
 
-st.subheader("🚨 Produto mais discrepante")
+st.subheader("♣ Produto mais discrepante •")
 
 st.write(f"""
 Produto: {mais_discrepante['produto_id']}  
@@ -101,7 +101,7 @@ Z-score: {mais_discrepante['z_score']:.2f}
 
 top_outliers = df_filtro.sort_values(by='z_score', key=np.abs, ascending=False).head(5)
 
-st.subheader("🔥 Top 5 produtos mais discrepantes")
+st.subheader("♪ Top 5 produtos mais discrepantes")
 st.dataframe(top_outliers[['produto_id', 'preco_unitario', 'z_score']])
 
 variacao_prod = df_filtro.groupby('produto_id')['preco_unitario'].agg(['min','max'])
@@ -110,7 +110,7 @@ variacao_prod['variacao'] = variacao_prod['max'] - variacao_prod['min']
 
 mais_variacao = variacao_prod.sort_values('variacao', ascending=False).head(1)
 
-st.subheader("📈 Produto com maior variação de preço")
+st.subheader("♫ Produto com maior variação de preço ♦")
 st.dataframe(mais_variacao)
 
 # =========================
@@ -129,9 +129,9 @@ kpi_preco_max = np.max(precos)
 
 col1, col2, col3 = st.columns(3)
 
-col1.metric("💰 Receita Total", f"{kpi_receita:,.2f}")
-col2.metric("📦 Volume Total", f"{kpi_volume:,.0f}")
-col3.metric("💲 Preço Médio", f"{kpi_preco_medio:,.2f}")
+col1.metric("‼ Receita Total", f"{kpi_receita:,.2f}")
+col2.metric("‼ Volume Total", f"{kpi_volume:,.0f}")
+col3.metric("‼ Preço Médio", f"{kpi_preco_medio:,.2f}")
 
 ticket_medio = kpi_receita / kpi_volume
 st.metric("🧾 Ticket Médio", f"{ticket_medio:,.2f}")
@@ -144,13 +144,13 @@ st.bar_chart(df_empresa)
 df_regiao = df_filtro.groupby('regiao')['receita'].sum()
 st.bar_chart(df_regiao)
 
-st.subheader("🏆 Comparação de Receita")
+st.subheader("♥ Comparação de Receita")
 st.bar_chart(df_comp.set_index('empresa'))
 
 variacao = ((kpi_preco_max - kpi_preco_min) / kpi_preco_min) * 100
 st.metric("📊 Variação de Preço (%)", f"{variacao:.2f}%")
 
-st.subheader("📈 Evolução de Preço")
+st.subheader("♥ Evolução de Preço")
 
 st.line_chart(
     df_filtro.groupby('data')['preco_unitario'].mean()
@@ -162,7 +162,7 @@ st.bar_chart(
     df_filtro.groupby('produto_id')['receita'].sum()
 )
 
-st.subheader("🌎 Receita por Região")
+st.subheader("‼ Receita por Região")
 
 st.bar_chart(
     df_filtro.groupby('regiao')['receita'].sum()
@@ -171,14 +171,14 @@ st.bar_chart(
 # =========================
 # ANÁLISE
 # =========================
-st.subheader("📉 Estatísticas")
+st.subheader("‼ Estatísticas")
 
 st.write("Desvio padrão:", np.std(precos))
 st.write("Mediana:", np.median(precos))
 
 #++++++++++++++++++++++++++++
 # seaborn      ##############
-st.subheader("📦 Boxplot - Preço dos Produtos")
+st.subheader("‼ Boxplot - Preço dos Produtos")
 
 fig, ax = plt.subplots()
 
@@ -192,7 +192,7 @@ ax.set_title("Distribuição de Preço (com outliers)")
 st.pyplot(fig)
 #------------
 #regiao
-st.subheader("🌎 Boxplot por Região")
+st.subheader("‼ Boxplot por Região")
 
 fig, ax = plt.subplots()
 
@@ -208,7 +208,7 @@ plt.xticks(rotation=45)
 st.pyplot(fig)
 
 sns.set_theme(style="whitegrid")
-st.subheader("📈 Evolução de Preço (Seaborn)")
+st.subheader("‼ Evolução de Preço (Seaborn)")
 
 fig, ax = plt.subplots()
 
@@ -226,7 +226,7 @@ ax.set_ylabel("Preço")
 
 st.pyplot(fig)
 
-st.subheader("📊 Receita por Produto")
+st.subheader("‼  Receita por Produto")
 
 df_prod = df_filtro.groupby("produto_id")["receita"].sum().reset_index()
 
@@ -247,7 +247,7 @@ plt.xticks(rotation=45)
 
 st.pyplot(fig)
 
-st.subheader("🌎 Receita por Região")
+st.subheader("‼ Receita por Região")
 
 df_reg = df_filtro.groupby("regiao")["receita"].sum().reset_index()
 
@@ -264,7 +264,7 @@ ax.set_title("Receita por Região")
 
 st.pyplot(fig)
 
-st.subheader("🌎 Receita por Região")
+st.subheader(" Receita por Região")
 
 df_reg = df_filtro.groupby("regiao")["receita"].sum().reset_index()
 
@@ -281,7 +281,7 @@ ax.set_title("Receita por Região")
 
 st.pyplot(fig)
 
-st.subheader("📊 Histórico SCD Tipo 2")
+st.subheader("‼ Histórico SCD Tipo 2")
 
 gold = pd.read_csv("data/gold/gold_produto.csv")
 
