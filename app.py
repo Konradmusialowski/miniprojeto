@@ -80,6 +80,39 @@ df_filtro['preco_unitario'] = pd.to_numeric(df_filtro['preco_unitario'], errors=
 df_filtro['volume'] = pd.to_numeric(df_filtro['volume'], errors='coerce')
 
 df_filtro = df_filtro.fillna(0)
+
+# média e desvio
+media = np.mean(df_filtro['preco_unitario'])
+desvio = np.std(df_filtro['preco_unitario'])
+
+# calcular z-score
+df_filtro['z_score'] = (df_filtro['preco_unitario'] - media) / desvio
+
+# pegar maior discrepante
+mais_discrepante = df_filtro.loc[df_filtro['z_score'].abs().idxmax()]
+
+st.subheader("🚨 Produto mais discrepante")
+
+st.write(f"""
+Produto: {mais_discrepante['produto_id']}  
+Preço: {mais_discrepante['preco_unitario']:.2f}  
+Z-score: {mais_discrepante['z_score']:.2f}
+""")
+
+top_outliers = df_filtro.sort_values(by='z_score', key=np.abs, ascending=False).head(5)
+
+st.subheader("🔥 Top 5 produtos mais discrepantes")
+st.dataframe(top_outliers[['produto_id', 'preco_unitario', 'z_score']])
+
+variacao_prod = df_filtro.groupby('produto_id')['preco_unitario'].agg(['min','max'])
+
+variacao_prod['variacao'] = variacao_prod['max'] - variacao_prod['min']
+
+mais_variacao = variacao_prod.sort_values('variacao', ascending=False).head(1)
+
+st.subheader("📈 Produto com maior variação de preço")
+st.dataframe(mais_variacao)
+
 # =========================
 # GRÁFICOS
 # =========================
