@@ -12,20 +12,8 @@ GOLD_PATH = "data/gold/"
 os.makedirs(SILVER_PATH, exist_ok=True)
 os.makedirs(GOLD_PATH, exist_ok=True)
 
-print("\n===== ANTES =====")
-print(gold[gold['flag_ativo'] == True])
 
-print("\n===== DEPOIS =====")
-print(gold[gold['id_produto_original'] == prod])
 
-print(f"\n🔍 Produto: {prod}")
-
-print("ANTES:")
-print(ativo)
-
-# depois do update
-print("DEPOIS:")
-print(gold[gold['id_produto_original'] == prod])
 
 # =========================
 # EXTRAÇÃO (BRONZE)
@@ -100,3 +88,12 @@ for _, row in df.sort_values('data').iterrows():
 gold.to_csv(GOLD_PATH + "gold_produto.csv", index=False)
 
 print("ETL finalizado com sucesso!")
+import pandas as pd
+
+df_test = pd.DataFrame({
+    "produto_id": ["P001", "P001"],
+    "preco_unitario": [10.0, 15.0],
+    "data": ["2025-01-01", "2025-02-01"]
+})
+
+df_test['data'] = pd.to_datetime(df_test['data'])
