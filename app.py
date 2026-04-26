@@ -55,6 +55,20 @@ df_sem_outlier = df_filtro[
     (df_filtro['preco_unitario'] >= limite_inferior) &
     (df_filtro['preco_unitario'] <= limite_superior)
 ]
+
+np.mean(df_sem_outlier['preco_unitario'])
+preco = df_filtro['preco_unitario']
+
+preco_norm = (preco - preco.min()) / (preco.max() - preco.min())
+
+df_filtro['preco_normalizado'] = preco_norm
+media = np.mean(preco)
+desvio = np.std(preco)
+
+z_score = (preco - media) / desvio
+
+df_filtro['preco_zscore'] = z_score
+df_filtro['preco_log'] = np.log1p(df_filtro['preco_unitario'])
 precos = df_filtro['preco_unitario'].values
 receita = df_filtro['receita'].values
 volume = df_filtro['volume'].values
