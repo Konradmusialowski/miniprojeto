@@ -145,6 +145,35 @@ st.write("Mediana:", np.median(precos))
 
 #++++++++++++++++++++++++++++
 # seaborn      ##############
+st.subheader("📦 Boxplot - Preço dos Produtos")
+
+fig, ax = plt.subplots()
+
+sns.boxplot(
+    x=df_filtro['preco_unitario'],
+    ax=ax
+)
+
+ax.set_title("Distribuição de Preço (com outliers)")
+
+st.pyplot(fig)
+#------------
+#regiao
+st.subheader("🌎 Boxplot por Região")
+
+fig, ax = plt.subplots()
+
+sns.boxplot(
+    data=df_filtro,
+    x="regiao",
+    y="preco_unitario",
+    ax=ax
+)
+
+plt.xticks(rotation=45)
+
+st.pyplot(fig)
+
 sns.set_theme(style="whitegrid")
 st.subheader("📈 Evolução de Preço (Seaborn)")
 
