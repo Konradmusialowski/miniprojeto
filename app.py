@@ -113,6 +113,92 @@ mais_variacao = variacao_prod.sort_values('variacao', ascending=False).head(1)
 st.subheader("♫ Produto com maior variação de preço ♦")
 st.dataframe(mais_variacao)
 
+st.sidebar.header("Filtros")
+
+# filtro por mês
+df['mes'] = df['data'].dt.to_period('M').astype(str)
+
+mes = st.sidebar.multiselect(
+    "Mês",
+    df['mes'].unique(),
+    default=df['mes'].unique()
+)
+
+# filtro por brick
+brick = st.sidebar.multiselect(
+    "Brick",
+    df['brick'].dropna().unique(),
+    default=df['brick'].dropna().unique()
+)
+
+# filtro por categoria
+categoria = st.sidebar.multiselect(
+    "Categoria",
+    df['categoria'].dropna().unique(),
+    default=df['categoria'].dropna().unique()
+)
+
+df_filtro = df[
+    (df['mes'].isin(mes)) &
+    (df['brick'].isin(brick)) &
+    (df['categoria'].isin(categoria))
+]
+receita_total = df_filtro['receita'].sum()
+
+receita_clamed = df_filtro[df_filtro['empresa'] == 'Clamed']['receita'].sum()
+
+market_share = (receita_clamed / receita_total) * 100
+
+st.metric("📊 Market Share Clamed (%)", f"{market_share:.2f}%")
+
+preco_clamed = df_filtro[df_filtro['empresa'] == 'Clamed']['preco_unitario'].mean()
+preco_conc = df_filtro[df_filtro['empresa'] != 'Clamed']['preco_unitario'].mean()
+
+gap = preco_clamed - preco_conc
+
+st.metric("💲 Gap de Preço Médio", f"{gap:.2f}")
+
+df_brick = df_filtro.groupby(['brick', 'empresa'])['receita'].sum().reset_index()
+
+pivot = df_brick.pivot(index='brick', columns='empresa', values='receita').fillna(0)
+
+pivot['potencial'] = pivot.get('Concorrente', 0) - pivot.get('Clamed', 0)
+
+brick_top = pivot.sort_values('potencial', ascending=False).head(1)
+
+st.metric("🚀 Brick com maior potencial", brick_top.index[0])
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+st.subheader("🔥 Volume por Brick")
+
+heat = df_filtro.pivot_table(
+    values='volume',
+    index='brick',
+    columns='empresa',
+    aggfunc='sum'
+).fillna(0)
+
+fig, ax = plt.subplots()
+
+sns.heatmap(heat, annot=True, fmt=".0f", cmap="coolwarm", ax=ax)
+
+st.pyplot(fig)
+
+st.subheader("📈 Evolução de Vendas")
+
+df_time = df_filtro.groupby(['mes', 'empresa'])['receita'].sum().reset_index()
+
+pivot_time = df_time.pivot(index='mes', columns='empresa', values='receita').fillna(0)
+
+st.line_chart(pivot_time)
+
+col1, col2, col3 = st.columns(3)
+
+col1.metric("Market Share", f"{market_share:.2f}%")
+col2.metric("Gap Preço", f"{gap:.2f}")
+col3.metric("Brick Potencial", brick_top.index[0])
+
 # =========================
 # GRÁFICOS
 # =========================
