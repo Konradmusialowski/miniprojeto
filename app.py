@@ -147,7 +147,7 @@ receita_total = df_filtro['receita'].sum()
 
 receita_clamed = df_filtro[df_filtro['empresa'] == 'Clamed']['receita'].sum()
 
-market_share =((receita_clamed / receita_total) * 100)
+market_share =(receita_clamed / receita_total) 
 
 st.metric("📊 Market Share Clamed (%)", f"{market_share:.2f}%")
 
