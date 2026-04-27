@@ -196,7 +196,7 @@ st.line_chart(pivot_time)
 
 col1, col2, col3 = st.columns(3)
 
-col1.metric("Market Share", f"{market_share:.2f}%")
+
 col2.metric("Gap Preço", f"{gap:.2f}")
 col3.metric("Brick Potencial", brick_top.index[0])
 
