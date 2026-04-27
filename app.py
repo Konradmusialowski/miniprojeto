@@ -143,15 +143,15 @@ df_filtro = df[
     (df['brick'].isin(brick)) &
     (df['categoria'].isin(categoria))
 ]
-receita_total = df_filtro['receita'].sum()
 
-receita_clamed = df_filtro[df_filtro['empresa'] == 'Clamed']['receita'].sum()
+df_filtro = df_filtro.copy()
 
-market_share = (receita_clamed / receita_total) * 100
+df_filtro['receita'] = pd.to_numeric(df_filtro['receita'], errors='coerce')
+df_filtro = df_filtro.fillna(0)
 
-st.metric("📊 Market Share Clamed (%)", f"{market_share:.2f}%")
+receita_total = np.sum(df_filtro['receita'])
 
-st.metric("📊 Market Share Clamed (%)", f"{market_share:.2f}%")
+st.write("Receita Total:", receita_total)
 
 preco_clamed = df_filtro[df_filtro['empresa'] == 'Clamed']['preco_unitario'].mean()
 preco_conc = df_filtro[df_filtro['empresa'] != 'Clamed']['preco_unitario'].mean()
