@@ -143,6 +143,8 @@ df_filtro = df[
     (df['brick'].isin(brick)) &
     (df['categoria'].isin(categoria))
 ]
+st.write("Receita Total:", receita_total)
+st.write("Receita Clamed:", receita_clamed)
 receita_total = np.sum(df_filtro['receita'])
 receita_clamed = np.sum(df_filtro[df_filtro['empresa'] == 'Clamed']['receita'])
 
@@ -171,8 +173,7 @@ pivot['potencial'] = pivot.get('Concorrente', 0) - pivot.get('Clamed', 0)
 brick_top = pivot.sort_values('potencial', ascending=False).head(1)
 
 st.metric("🚀 Brick com maior potencial", brick_top.index[0])
-import seaborn as sns
-import matplotlib.pyplot as plt
+
 
 st.subheader("🔥 Volume por Brick")
 
