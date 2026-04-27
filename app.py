@@ -160,18 +160,7 @@ gap = preco_clamed - preco_conc
 
 st.metric("💲 Gap de Preço Médio", f"{gap:.2f}")
 
-df_brick = df_filtro.groupby(['brick', 'empresa'])['receita'].sum().reset_index()
-
-pivot = df_brick.pivot(index='brick', columns='empresa', values='receita').fillna(0)
-
-pivot['potencial'] = pivot.get('Concorrente', 0) - pivot.get('Clamed', 0)
-
-brick_top = pivot.sort_values('potencial', ascending=False).head(1)
-
-st.metric("🚀 Brick com maior potencial", brick_top.index[0])
-
-
-st.subheader("🔥 Volume por Brick")
+st.subheader("🔥 Volume por Brick (Heatmap)")
 
 heat = df_filtro.pivot_table(
     values='volume',
@@ -180,7 +169,36 @@ heat = df_filtro.pivot_table(
     aggfunc='sum'
 ).fillna(0)
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(10,6))
+
+sns.heatmap(
+    heat,
+    annot=True,
+    fmt=".0f",
+    linewidths=0.5,
+    cmap="YlOrRd",
+    ax=ax
+)
+
+ax.set_title("Volume de Vendas por Brick e Empresa")
+
+st.pyplot(fig)
+
+st.subheader("🏆 Ranking de Volume por Brick")
+
+ranking = df_filtro.groupby('brick')['volume'].sum().sort_values(ascending=False).head(10)
+
+st.bar_chart(ranking)
+
+st.subheader("⚖️ Comparação de Volume por Brick")
+
+fig, ax = plt.subplots(figsize=(10,6))
+
+heat.plot(kind='bar', ax=ax)
+
+plt.xticks(rotation=45)
+
+st.pyplot(fig)
 
 sns.heatmap(heat, annot=True, fmt=".0f", cmap="coolwarm", ax=ax)
 
