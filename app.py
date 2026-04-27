@@ -212,12 +212,20 @@ pivot_time = df_time.pivot(index='mes', columns='empresa', values='receita').fil
 
 st.line_chart(pivot_time)
 
-col1, col2, col3 = st.columns(3)
+df_brick = df_filtro.groupby(['brick', 'empresa'])['receita'].sum().reset_index()
+
+pivot = df_brick.pivot(index='brick', columns='empresa', values='receita').fillna(0)
+
+pivot['potencial'] = pivot.get('Concorrente', 0) - pivot.get('Clamed', 0)
+
+# proteção caso não tenha dados
+if pivot.empty:
+    brick_nome = "Sem dados"
+else:
+    brick_nome = pivot.sort_values('potencial', ascending=False).index[0]
 
 
-col2.metric("Gap Preço", f"{gap:.2f}")
-col3.metric("Brick Potencial", brick_top.index[0])
-
+col3.metric("Brick Potencial", brick_nome)
 # =========================
 # GRÁFICOS
 # =========================
